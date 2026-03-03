@@ -454,9 +454,9 @@ class Predictor(BasePredictor):
         device = select_device(self.args.device, verbose=verbose)
         if model is None:
             model = self.get_model()
+        self.model = model.half() if self.args.half else model.float()
         model.eval()
         model = model.to(device)
-        self.model = model.half() if self.args.half else model.float()
         self.device = device
         self.mean = torch.tensor([123.675, 116.28, 103.53]).view(-1, 1, 1).to(device)
         self.std = torch.tensor([58.395, 57.12, 57.375]).view(-1, 1, 1).to(device)
